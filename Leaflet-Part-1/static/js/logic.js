@@ -15,7 +15,7 @@ function createFeatures(quakeData) {
   // Create function and add features to display in markers
   function onEachFeature(feature, layer) {
     layer.bindPopup(
-      `<h3>${feature.properties.type}</h3><hr><p>${feature.properties.title}</p>`
+      `<h3>${feature.properties.title}</h3><hr><p>${feature.geometry.coordinates[2]}</p>`
     );
   }
 
@@ -40,7 +40,7 @@ function createFeatures(quakeData) {
     if (x == 0) {
       return 1;
     }
-    return x * 4;
+    return x * 5;
   }
   function KDRstyle(feature) {
     return {
@@ -105,4 +105,27 @@ function createMap(earthquakes) {
       collapsed: false,
     })
     .addTo(myMap);
+
+    // Create legend
+    let legend = L.control({ position: "bottomright" });
+    legend.onAdd = function() {
+      let div = L.DomUtil.create("div", "info legend");
+      let labels = {
+        KDRcolor
+      };
+
+      let legendInfo = "<h1>Quake Data<br /></h1>" +
+      "<div class=\"labels\">" +
+      "</div>";
+
+    div.innerHTML = legendInfo;
+
+    div.innerHTML += "<ul>" + labels.join("") + "</ul>";
+    return div;
+  };
+
+
+    // Add legend to map
+    legend.addTo(myMap);
+  
 }
